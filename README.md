@@ -1,5 +1,6 @@
 ## 概要
 vCenterのAPI使ってVM作成するやつ
+どっかの会社で使ってるやつと同じ。
 
 ## その他
 以下はテスト用  
@@ -24,12 +25,14 @@ yum -y install open-vm-tools perl
 
 | ファイル名| 内容|
 | :----| ----|
-|common_config.yml|OSにログインしてパッケージインストールとかする|
-|create_guest_vm.yml|VMを作成する|
-|show_guest_vm.yml|作成したVMの構成情報を取得する|
-|tagging_guest_vm.yml|VMにタグ(vCenter管理用途)を付与する|
-|vm_icmp_check.yml|pingでIPが存在しないか確認する|
-|vm_reg_check.yml|同じ名前のVM(vCenter上の管理名)が存在しないか確認する|
+|guest_os_add_disk.yml|２個目以降のディスクをアタッチする|
+|guest_os_common_config.yml|VMにログインして色々設定する|
+|guest_os_create.yml|指定された情報で作成する|
+|guest_os_icmp_check.yml|VMに割り当てるIPが存在しないか確認する|
+|guest_os_info.yml|VMのタグ情報取得する|
+|guest_os_poweron.yml|VMの電源をONする|
+|guest_os_register_check.yml|vmware上に同じ名前のVMが存在しないか確認する|
+|guest_os_tagging.yml|VMにタグを付与する|
 
 ## 追加のディスクアタッチについて
 
