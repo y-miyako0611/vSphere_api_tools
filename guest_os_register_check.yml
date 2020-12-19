@@ -1,0 +1,22 @@
+---
+- name: "vCenterに同じ名前のVMがいないか確認する"
+  hosts: localhost 
+  gather_facts: no
+  tasks:
+    - name: "VMの登録確認"
+      vmware_guest_info:
+        hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+        username: "{{lookup('env', 'VMWARE_USER')}}"
+        password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+        datacenter: "{{ datacenter_name }}"
+        folder: "{{ folder_name }}"
+        name: "{{ vmname }}"
+        tags: yes
+        validate_certs: False
+      delegate_to: localhost
+      failed_when: no
+      register: vm_info
+
+    - name: "登録確認の結果表示(NG!!)"
+      fail: msg="ワークフローを終了しました。 {{ vmname }} は既に登録されている名前のようです。間違ってないか確認してください。"
+      when: vm_info.instance is defined

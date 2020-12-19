@@ -1,0 +1,17 @@
+---
+- name: "ゲストサーバにタグを付与する"
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: "ゲストサーバにタグを付与する処理の実行"
+      vmware_tag_manager:
+        hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+        username: "{{lookup('env', 'VMWARE_USER')}}"
+        password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+        validate_certs: False
+        tag_names: 
+          - "{{ tag_name }}"
+        object_name: "{{ vmname }}"
+        object_type: VirtualMachine
+        state: "{{ tag_state }}"
+      delegate_to: localhost

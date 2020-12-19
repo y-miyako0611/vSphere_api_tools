@@ -1,0 +1,20 @@
+---
+- name: "ゲストサーバのタグ情報を確認する"
+  hosts: localhost 
+  gather_facts: no
+  tasks:
+    - name: "ゲストサーバのタグ情報取得"
+      vmware_guest_info:
+        hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+        username: "{{lookup('env', 'VMWARE_USER')}}"
+        password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+        datacenter: "{{ datacenter_name }}"
+        folder: "{{ folder_name }}"
+        name: "{{ vmname }}"
+        tags: yes
+        validate_certs: False
+      delegate_to: localhost
+      register: vm_info
+      
+    - debug:
+        var: vm_info

@@ -1,0 +1,37 @@
+---
+- name: "DNSなど必要な初期設定を実施する" # delegate_toで無理やり捻じ曲げるパターン
+  hosts: localhost
+  gather_facts: no
+  tasks:        
+    - name: 
+      vmware_guest_info:
+        hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+        username: "{{lookup('env', 'VMWARE_USER')}}"
+        password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+        validate_certs: False
+        datacenter: "{{ datacenter_name }}"
+        name: "{{vmname}}"
+        tags: yes
+      register: vm_facts
+      delegate_to: localhost
+
+    - debug:
+        var: vm_facts
+        
+    - name: "DNSサーバのIPアドレス登録"
+      nmcli:
+        type: ethernet
+        conn_name: "{{ if_name }}"
+        dns4:
+          - "{{ dns_address1 }}"
+          - "{{ dns_address2 }}"
+        dns4_search:
+          - "{{ dns_search1 }}"
+        state: present
+      delegate_to: "{{ ipaddress }}"
+      when: vm_facts.instance.tags == ["New_VM"]
+
+    - name: "NICのアクティベート"
+      shell: nmcli con up "{{ if_name }}"
+      delegate_to: "{{ ipaddress }}"
+      when: vm_facts.instance.tags == ["New_VM"]

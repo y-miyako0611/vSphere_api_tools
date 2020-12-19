@@ -1,0 +1,14 @@
+
+---
+- name: "IPアドレスが存在しないことを確認する"
+  hosts: localhost 
+  gather_facts: no
+  tasks:
+    - name: "pingで疎通確認"
+      shell: ping -c 3 "{{ ipaddress }}" |  egrep -c '[123] received'
+      failed_when: no
+      register: icmp_info
+      
+    - name: "pingの結果表示(NG!!)"
+      fail: msg="ワークフローを終了しました。IPアドレス {{ ipaddress }} は既に使われているようです。"
+      when: icmp_info.stdout == "1"

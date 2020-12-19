@@ -1,0 +1,53 @@
+---
+- name: "Step2 仮想マシンにディスクを追加する"
+  hosts: localhost
+  vars:
+    add_disk_num: "{{ disk_num }}"
+  gather_facts: false
+  tasks:
+  - name: "2つ目のディスクを作成する"
+    vmware_guest:
+      name: "{{ vmname }}"
+      hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+      username: "{{lookup('env', 'VMWARE_USER')}}"
+      password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+      datacenter: "{{ datacenter_name }}"
+      folder: "{{ folder_name }}"
+      template: "{{ template_name }}"
+      esxi_hostname: "{{ esxi_hostname }}"
+      disk:
+      - size_gb: "{{ disk_size }}"
+        type: thick
+        datastore: "{{ datastore_name }}"
+      - size_gb: "{{ disk2_size }}"
+        type: thick
+        datastore: "{{ datastore_name }}"
+      state: present
+      validate_certs: false
+    delegate_to: localhost
+    when: add_disk_num == "1"
+
+  - name: "2-3つ目のディスクを作成する"
+    vmware_guest:
+      name: "{{ vmname }}"
+      hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+      username: "{{lookup('env', 'VMWARE_USER')}}"
+      password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+      datacenter: "{{ datacenter_name }}"
+      folder: "{{ folder_name }}"
+      template: "{{ template_name }}"
+      esxi_hostname: "{{ esxi_hostname }}"
+      disk:
+      - size_gb: "{{ disk_size }}"
+        type: thick
+        datastore: "{{ datastore_name }}"
+      - size_gb: "{{ disk2_size }}"
+        type: thick
+        datastore: "{{ datastore_name }}"
+      - size_gb: "{{ disk3_size }}"
+        type: thick
+        datastore: "{{ datastore_name }}"
+      state: present
+      validate_certs: false
+    delegate_to: localhost
+    when: add_disk_num == "2"
