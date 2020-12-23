@@ -1,8 +1,6 @@
 ---
 - name: "Step2 仮想マシンにディスクを追加する"
   hosts: localhost
-  vars:
-    add_disk_num: "{{ disk_num }}"
   gather_facts: false
   tasks:
   - name: "2つ目のディスクを作成する"
@@ -25,7 +23,7 @@
       state: present
       validate_certs: false
     delegate_to: localhost
-    when: add_disk_num == "1"
+    when: disk_num == "1"
 
   - name: "2-3つ目のディスクを作成する"
     vmware_guest:
@@ -50,4 +48,4 @@
       state: present
       validate_certs: false
     delegate_to: localhost
-    when: add_disk_num == "2"
+    when: disk_num == "2"
