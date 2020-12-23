@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: false
   vars:
-    tmp_name: "{{ template_name }}"
+    tmp_name: "{{ hoge }}"
   tasks:
   - name: "仮想マシンの作成"
     vmware_guest:
@@ -33,7 +33,7 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: tmp_name == ["hoge"]
+    when: tmp_name == ["centos"]
 
   - name: "仮想マシンの作成"
     vmware_guest:
@@ -56,4 +56,4 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: tmp_name == ["test"]
+    when: tmp_name == ["ubuntu"]
