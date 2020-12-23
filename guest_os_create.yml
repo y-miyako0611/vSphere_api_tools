@@ -2,6 +2,8 @@
 - name: "Step1 テンプレートから仮想マシンを作成する"
   hosts: localhost
   gather_facts: false
+  vars:
+    tmp_name: "{{ template_name }}"
   tasks:
   - name: "仮想マシンの作成"
     vmware_guest:
@@ -31,7 +33,7 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: "{{ template_name }}" == ["hoge"]
+    when: "{{ tmp_name }}" == ["hoge"]
 
   - name: "仮想マシンの作成"
     vmware_guest:
@@ -54,4 +56,4 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: "{{ template_name }}" == ["test"]
+    when: "{{ tmp_name }}" == ["test"]
