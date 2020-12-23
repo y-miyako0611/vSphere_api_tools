@@ -35,4 +35,3 @@
       shell: nmcli con up "{{ if_name }}"
       delegate_to: "{{ ipaddress }}"
       when: vm_facts.instance.tags == ["New_VM"]
-  when: template_name == "centos7"
