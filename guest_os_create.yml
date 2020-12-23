@@ -31,7 +31,7 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: hoge == "centos"
+    when: template_name == "centos7"
 
   - name: "仮想マシンの作成"
     vmware_guest:
@@ -54,4 +54,4 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: hoge == "ubuntu"
+    when: template_name == "test"
