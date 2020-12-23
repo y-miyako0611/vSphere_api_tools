@@ -2,8 +2,6 @@
 - name: "Step1 テンプレートから仮想マシンを作成する"
   hosts: localhost
   gather_facts: false
-  vars:
-    tmp_name: "{{ hoge }}"
   tasks:
   - name: "仮想マシンの作成"
     vmware_guest:
@@ -33,7 +31,7 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: tmp_name == "centos"
+    when: hoge == "centos"
 
   - name: "仮想マシンの作成"
     vmware_guest:
@@ -56,4 +54,4 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: tmp_name == "ubuntu"
+    when: hoge == "ubuntu"
