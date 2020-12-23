@@ -31,3 +31,27 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
+    when: "{{ template_name }}" == ["test"]
+
+  - name: "仮想マシンの作成"
+    vmware_guest:
+      name: "{{ vmname }}"
+      hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+      username: "{{lookup('env', 'VMWARE_USER')}}"
+      password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+      datacenter: "{{ datacenter_name }}"
+      folder: "{{ folder_name }}"
+      template: "{{ template_name }}"
+      esxi_hostname: "{{ esxi_hostname }}"
+      disk:
+      - size_gb: "{{ disk_size }}"
+        type: thick
+        datastore: "{{ datastore_name }}"
+      hardware:
+        memory_mb: "{{ memory_mb_number }}"
+        num_cpus: "{{ cpu_number }}"
+        scsi: paravirtual
+      state: poweredoff
+      validate_certs: false
+    delegate_to: localhost
+    when: "{{ template_name }}" == ["test"]
