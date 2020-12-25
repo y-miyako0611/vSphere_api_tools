@@ -51,7 +51,7 @@
         memory_mb: "{{ memory_mb_number }}"
         num_cpus: "{{ cpu_number }}"
         scsi: paravirtual
-      state: poweredoff
+      state: poweredon
       validate_certs: false
     delegate_to: localhost
     when: template_name == "ubuntu20"
