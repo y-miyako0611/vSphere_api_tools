@@ -44,7 +44,7 @@
         password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
         datacenter: "{{ datacenter_name }}"
         esxi_hostname: "{{ esxi_hostname }}"
-        state: poweredoon
+        state: poweredon
         validate_certs: false
         wait_for_ip_address: yes
       delegate_to: localhost
