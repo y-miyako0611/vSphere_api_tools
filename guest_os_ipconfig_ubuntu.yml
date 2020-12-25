@@ -19,10 +19,23 @@
         var: vm_facts
         
     - name: "IPアドレスを設定"
-      shell: "/var/tmp/ip_config.sh {{ ipaddress }} {{ gateway }}"
+      shell: "bash /var/tmp/ip_config.sh {{ ipaddress }} {{ gateway }}"
       delegate_to: "{{ tmp_ipaddress }}"
       when: vm_facts.instance.tags == ["New_VM"]
 
+    - name: "仮想マシンをOFFする"
+      vmware_guest:
+        name: "{{ vmname }}"
+        hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+        username: "{{lookup('env', 'VMWARE_USER')}}"
+        password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+        datacenter: "{{ datacenter_name }}"
+        esxi_hostname: "{{ esxi_hostname }}"
+        state: poweredoff
+        validate_certs: false
+      delegate_to: localhost
+      when: vm_facts.instance.tags == ["New_VM"]
+      
     - name: "仮想マシンをONする"
       vmware_guest:
         name: "{{ vmname }}"
@@ -31,7 +44,7 @@
         password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
         datacenter: "{{ datacenter_name }}"
         esxi_hostname: "{{ esxi_hostname }}"
-        state: restarted
+        state: poweredoon
         validate_certs: false
         wait_for_ip_address: yes
       delegate_to: localhost
