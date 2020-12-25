@@ -20,10 +20,10 @@
         
     - name: "IPアドレスを設定"
       shell: "/var/tmp/ip_config.sh {{ ipaddress }} {{ gateway }}"
-      delegate_to: "{{ ipaddress }}"
+      delegate_to: "{{ tmp_ipaddress }}"
       when: vm_facts.instance.tags == ["New_VM"]
 
     - name: "再起動"
       shell: "reboot"
-      delegate_to: "{{ ipaddress }}"
+      delegate_to: "{{ tmp_ipaddress }}"
       when: vm_facts.instance.tags == ["New_VM"]
