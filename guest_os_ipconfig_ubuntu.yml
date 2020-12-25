@@ -23,8 +23,8 @@
       delegate_to: "{{ tmp_ipaddress }}"
       when: vm_facts.instance.tags == ["New_VM"]
 
-    - name: "IPアドレスを設定"
+    - name: "再起動"
       shell: "reboot"
       delegate_to: "{{ tmp_ipaddress }}"
-      poll: 0
       when: vm_facts.instance.tags == ["New_VM"]
+      failed_when: no
