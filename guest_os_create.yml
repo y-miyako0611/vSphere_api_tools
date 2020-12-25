@@ -54,4 +54,4 @@
       state: poweredoff
       validate_certs: false
     delegate_to: localhost
-    when: template_name == "test"
+    when: template_name == "ubuntu20"
