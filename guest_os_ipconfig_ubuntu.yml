@@ -1,0 +1,29 @@
+---
+- name: "DNSなど必要な初期設定を実施する" # delegate_toで無理やり捻じ曲げるパターン
+  hosts: localhost
+  gather_facts: no
+  tasks:        
+    - name: 
+      vmware_guest_info:
+        hostname: "{{lookup('env', 'VMWARE_HOST')}}"
+        username: "{{lookup('env', 'VMWARE_USER')}}"
+        password: "{{lookup('env', 'VMWARE_PASSWORD')}}"
+        validate_certs: False
+        datacenter: "{{ datacenter_name }}"
+        name: "{{vmname}}"
+        tags: yes
+      register: vm_facts
+      delegate_to: localhost
+
+    - debug:
+        var: vm_facts
+        
+    - name: "IPアドレスを設定"
+      shell: "/var/tmp/ip_config.sh {{ ipaddress }} {{ gateway }}"
+      delegate_to: "{{ ipaddress }}"
+      when: vm_facts.instance.tags == ["New_VM"]
+
+    - name: "再起動"
+      shell: "reboot"
+      delegate_to: "{{ ipaddress }}"
+      when: vm_facts.instance.tags == ["New_VM"]
