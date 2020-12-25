@@ -23,11 +23,6 @@
       delegate_to: "{{ tmp_ipaddress }}"
       when: vm_facts.instance.tags == ["New_VM"]
 
-    - name: "再起動"
-      shell: "reboot"
-      delegate_to: "{{ tmp_ipaddress }}"
-      when: vm_facts.instance.tags == ["New_VM"]
-
     - name: "仮想マシンをONする"
       vmware_guest:
         name: "{{ vmname }}"
