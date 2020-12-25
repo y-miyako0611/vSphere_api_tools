@@ -26,4 +26,5 @@
     - name: "IPアドレスを設定"
       shell: "reboot"
       delegate_to: "{{ tmp_ipaddress }}"
+      poll: 0
       when: vm_facts.instance.tags == ["New_VM"]
