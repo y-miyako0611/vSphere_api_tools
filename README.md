@@ -33,6 +33,7 @@ yum -y install open-vm-tools perl
 |guest_os_poweron.yml|VMの電源をONする|
 |guest_os_register_check.yml|vmware上に同じ名前のVMが存在しないか確認する|
 |guest_os_tagging.yml|VMにタグを付与する|
+|guest_os_ipconfig_ubuntu.yml|ubuntuにIPを付与する|
 
 ## 追加のディスクアタッチについて
 
