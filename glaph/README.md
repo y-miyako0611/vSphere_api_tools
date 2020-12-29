@@ -12,9 +12,42 @@ esxiのリソース監視のメモ書き
 ## 前提条件
 esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。
 
-## 
+## Prometheusのインストール
+参考サイトを参照/firewalldで各ポート解放忘れないこと
 
+## Grafanaのインストール
+参考サイトを参照/firewalldで各ポート解放忘れないこと
+
+## mware_exporter
+```
+# dnf -y install python36
+# pip3 install vmware_exporter
+# cd /root/;mkdir vcenter;cd vcenter;vi vcenter
+-- ここから
+default:
+    vsphere_host: "192.168.10.201"
+    vsphere_user: "administrator@vsphere.local"
+    vsphere_password: "nya---n"
+    ignore_ssl: True
+    specs_size: 5000
+    fetch_custom_attributes: True
+    fetch_tags: True
+    fetch_alarms: True
+    collect_only:
+        vms: True
+        vmguests: True
+        datastores: True
+        hosts: True
+        snapshots: True
+-- ここまで
+# vmware_exporter -c config.yml &
+# firewall-cmd --add-port=9272/tcp --permanent
+# firewall-cmd --reload
+! http://Centos8のIP:9272　でメトリックスが見れるはず
+```
+## 
 ## 参考サイト
 - https://www.server-world.info/query?os=CentOS_8&p=prometheus&f=1
+- https://www.server-world.info/query?os=CentOS_8&p=prometheus&f=5
 - https://qiita.com/hiromiarts/items/fbc2001479ce75246917
 - https://knowledge.sakura.ad.jp/11633/
