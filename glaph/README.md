@@ -10,7 +10,8 @@ esxiのリソース監視のメモ書き
 - vmware_exporter(pipで最新版)※vmware_exporter(CentOS8からvCenterのAPI叩くやつらしい)
 
 ## 前提条件
-esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。
+esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。  
+! 完了すると! http://Centos8のIP:9090 にアクセスできる。
 
 ## Prometheusのインストール
 参考サイトを参照/firewalldで各ポート解放忘れないこと
@@ -18,7 +19,8 @@ esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提と
 ## Grafanaのインストール
 参考サイトを参照/firewalldで各ポート解放忘れないこと
 
-## mware_exporter
+## vmware_exporter
+- vmware_exporterのインストールと起動
 ```
 # dnf -y install python36
 # pip3 install vmware_exporter
@@ -45,6 +47,20 @@ default:
 # firewall-cmd --reload
 ! http://Centos8のIP:9272　でメトリックスが見れるはず
 ```
+- Prometheusの監視対象に追加する
+```
+#  vi /etc/prometheus/prometheus.yml
+-- ここから
+  # add vcenter
+  - job_name: 'vcenter'
+    static_configs:
+    - targets: ['localhost:9272']    
+-- ここまで
+
+# systemctl restart prometheus.service
+! http://Centos8のIP:9090 にアクセスしてvmware関連のグラフが取得できるようになっているのを確認する
+```
+
 ## 
 ## 参考サイト
 - https://www.server-world.info/query?os=CentOS_8&p=prometheus&f=1
