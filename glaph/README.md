@@ -1,26 +1,87 @@
 ## メモ
-esxiのリソース監視のメモ書き
+- exsi上のリソース状態をモニタリングしてみたいので環境構築のメモ書きです。
+- こちらをやってみた感じ(https://github.com/jorgedlcruz/vmware-grafana)
 
 ## 必要なもの(動作環境など)
 - esxi 6.7(CPU/メモリは各自の環境で大丈夫)
 - vCenter 6.7(一番弱いスペックのやつ)
 - CentOS8 Stream(4core/8GB 適当なスペックで作成)
-- Prometheus(dnfで最新版)
 - grafana(dnfで最新版)
-- vmware_exporter(pipで最新版)※vmware_exporter(CentOS8からvCenterのAPI叩くやつらしい)
+- telegraf
+- influxdb
+- ~Prometheus(dnfで最新版)~
+- ~vmware_exporter(pipで最新版)※vmware_exporter(CentOS8からvCenterのAPI叩くやつらしい)~
+
+## Grafanaのインストール
+- リソース状態の確認はGrafanaを使います。インストールおよび3000番ポートでアクセスするのでfirewallの許可しておく。
+```
+# dnf -y install grafana
+# firewall-cmd --add-port=3000/tcp --permanent
+# firewall-cmd --reload
+# firewall-cmd --list-all
+# systemctl enable grafana-server.service
+# systemctl start grafana-server.service
+```
+
+## influxDBのインストール
+- telegrafのデータはinfluxDBに貯めます。インストールおよび8060番ポートでアクセスするのでfirewallの許可しておく。
+```
+# cat <<EOF | sudo tee /etc/yum.repos.d/influxdb.repo
+[influxdb]
+name = InfluxDB Repository - RHEL 
+baseurl = https://repos.influxdata.com/rhel/8/x86_64/stable/
+enabled = 1
+gpgcheck = 1
+gpgkey = https://repos.influxdata.com/influxdb.key
+EOF
+
+# dnf -y install influxdb
+# firewall-cmd --add-port=8060/tcp --permanent
+# firewall-cmd --reload
+# firewall-cmd --list-all
+# systemctl enable influxdb
+# systemctl start influxdb
+
+! telegraf用のDB作成
+# influx
+Connected to http://localhost:8086 version 1.8.3
+InfluxDB shell version: 1.8.3
+> 
+> CREATE DATABASE telegraf
+> exit
+
+```
+## telegrafのインストール
+vCenterのデータ取集はtelegrafを使います。
+```
+# dnf -y install telegraf
+# cd /etc/telegraf
+!! telegraf.confを編集する。以下のセクションを編集などしていく
+! # Configuration for sending metrics to InfluxDB
+! [[outputs.influxdb]]
+
+! 追加するやつ
+urls = ["http://192.168.10.101:8086"]
+
+! コメントアウト外す
+database = "telegraf" # 上記で作成したDB名
+retention_policy = "" # 必要かわからん
+write_consistency = "any"　# 必要かわからん
+timeout = "5s"　# 必要かわからん
+```
+
 
 ## 前提条件
 esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。  
 ! 完了すると! http://Centos8のIP:9090 にアクセスできる。
 
-## Prometheusのインストール
-参考サイトを参照/firewalldで各ポート解放忘れないこと
 
-## Grafanaのインストール
-参考サイトを参照/firewalldで各ポート解放忘れないこと
 
-## vmware_exporter
-- vmware_exporterのインストールと起動
+## ~Prometheusのインストール~
+~参考サイトを参照/firewalldで各ポート解放忘れないこと~
+
+## ~vmware_exporter~
+- ~vmware_exporterのインストールと起動~
 ```
 # dnf -y install python36
 # pip3 install vmware_exporter
