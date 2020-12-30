@@ -66,6 +66,8 @@ default:
 - 2.`ホーム画面`-`Configuration(左歯車)`-`Data Sources`-`Add data source`-`Prometheus` で`Select`をクリック
 - 3.Settings画面で`http://localhost:9090`を入力して`Save & test`
 - 4.同じ画面の`Dashboards`タブをクリックして表示される項目を全て`import`する。
+- 5.`Dashboards`の`Prometheus Status`をクリックしてグラフが表示されることを確認する。
+
 
 ## 
 ## 参考サイト
