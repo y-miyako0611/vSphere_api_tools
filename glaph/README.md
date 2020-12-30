@@ -6,11 +6,15 @@
 - esxi 6.7(CPU/メモリは各自の環境で大丈夫)
 - vCenter 6.7(一番弱いスペックのやつ)
 - CentOS8 Stream(4core/8GB 適当なスペックで作成)
-- grafana(dnfで最新版)
-- telegraf
-- influxdb
+- grafana(7.3.4)
+- telegraf(1.17.0)
+- influxdb(1.8.3)
 - ~Prometheus(dnfで最新版)~
 - ~vmware_exporter(pipで最新版)※vmware_exporter(CentOS8からvCenterのAPI叩くやつらしい)~
+
+## 前提条件
+esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。  
+! 完了すると! http://Centos8のIP:9090 にアクセスできる。
 
 ## Grafanaのインストール
 - リソース状態の確認はGrafanaを使います。インストールおよび3000番ポートでアクセスするのでfirewallの許可しておく。
@@ -119,12 +123,19 @@ interval = "300s"
 
 ```
 
-
-## 前提条件
-esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。  
-! 完了すると! http://Centos8のIP:9090 にアクセスできる。
-
-
+## Grafanaに監視追加する
+- 1.http://Centos8のIP:3000にアクセスする。(admin/admin)
+- 2.`ホーム画面`-`Configuration(左歯車)`-`Data Sources`-`Add data source`-`InfluxDB` で`Select`をクリック
+- 3.Settings画面でURLに`http://localhost:8086`、Databseに`telegraf`を入力して`Save & test`
+- 4.左の田マークから`Manage`-`import`をクリック。
+- 5.`Import via grafana.com`に以下を入力して`load`をクリック。
+- 6.DBを`InfluxDB`にして`import`で完了。(以降繰り返し)
+```
+https://grafana.com/dashboards/8159
+https://grafana.com/dashboards/8162
+https://grafana.com/dashboards/8165
+https://grafana.com/dashboards/8168
+```
 
 ## ~Prometheusのインストール~
 ~参考サイトを参照/firewalldで各ポート解放忘れないこと~
@@ -171,15 +182,6 @@ default:
 ! http://Centos8のIP:9090 にアクセスしてvmware関連のグラフが取得できるようになっているのを確認する
 ```
 
-## Grafanaに監視追加する
-- 1.http://Centos8のIP:3000にアクセスする。(admin/admin)
-- 2.`ホーム画面`-`Configuration(左歯車)`-`Data Sources`-`Add data source`-`Prometheus` で`Select`をクリック
-- 3.Settings画面で`http://localhost:9090`を入力して`Save & test`
-- 4.同じ画面の`Dashboards`タブをクリックして表示される項目を全て`import`する。
-- 5.`Dashboards`の`Prometheus Status`をクリックしてグラフが表示されることを確認する。
-
-
-## 
 ## 参考サイト
 - https://www.server-world.info/query?os=CentOS_8&p=prometheus&f=1
 - https://www.server-world.info/query?os=CentOS_8&p=prometheus&f=5
