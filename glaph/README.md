@@ -61,6 +61,12 @@ default:
 ! http://Centos8のIP:9090 にアクセスしてvmware関連のグラフが取得できるようになっているのを確認する
 ```
 
+## Grafanaに監視追加する
+- 1.http://Centos8のIP:3000にアクセスする。(admin/admin)
+- 2.`ホーム画面`-`Configuration(左歯車)`-`Data Sources`-`Add data source`-`Prometheus` で`Select`をクリック
+- 3.Settings画面で`http://localhost:9090`を入力して`Save & test`
+- 4.同じ画面の`Dashboards`タブをクリックして表示される項目を全て`import`する。
+
 ## 
 ## 参考サイト
 - https://www.server-world.info/query?os=CentOS_8&p=prometheus&f=1
