@@ -51,8 +51,9 @@ InfluxDB shell version: 1.8.3
 > exit
 
 ```
+
 ## telegrafのインストール
-vCenterのデータ取集はtelegrafを使います。
+- vCenterのデータ取集はtelegrafを使います。
 ```
 # dnf -y install telegraf
 # cd /etc/telegraf
@@ -68,6 +69,54 @@ database = "telegraf" # 上記で作成したDB名
 retention_policy = "" # 必要かわからん
 write_consistency = "any"　# 必要かわからん
 timeout = "5s"　# 必要かわからん
+```
+- vCenterからリソース情報を取得するために設定追加
+- 192.168.10.201はvCenterのアドレス
+```
+# /etc/telegraf/telegraf.d
+# vi vsphere-stats.conf
+
+## Realtime instance
+[[inputs.vsphere]]
+## List of vCenter URLs to be monitored. These three lines must be uncommented
+## and edited for the plugin to work.
+interval = "60s"
+  vcenters = [ "https://192.168.10.201/sdk" ]
+  username = "administrator@vsphere.local"
+  password = "nya---n"
+
+vm_metric_include = []
+host_metric_include = []
+cluster_metric_include = []
+datastore_metric_exclude = ["*"]
+
+max_query_metrics = 256
+timeout = "60s"
+insecure_skip_verify = true
+
+## Historical instance
+[[inputs.vsphere]]
+interval = "300s"
+  vcenters = [ "https://192.168.10.201/sdk" ]
+  username = "administrator@vsphere.local"
+  password = "nya---n"
+
+  datastore_metric_include = [ "disk.capacity.latest", "disk.used.latest", "disk.provisioned.latest" ]
+  insecure_skip_verify = true
+  force_discover_on_init = true
+  host_metric_exclude = ["*"] # Exclude realtime metrics
+  vm_metric_exclude = ["*"] # Exclude realtime metrics
+
+  max_query_metrics = 256
+  collect_concurrency = 3
+  
+```
+
+- telegrafの起動
+```
+# systemctl enable telegraf.service
+# systemctl start telegraf.service
+
 ```
 
 
