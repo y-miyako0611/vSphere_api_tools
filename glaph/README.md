@@ -14,7 +14,6 @@
 
 ## 前提条件
 esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。  
-! 完了すると! http://Centos8のIP:9090 にアクセスできる。
 
 ## Grafanaのインストール
 - リソース状態の確認はGrafanaを使います。インストールおよび3000番ポートでアクセスするのでfirewallの許可しておく。
@@ -136,6 +135,24 @@ https://grafana.com/dashboards/8162
 https://grafana.com/dashboards/8165
 https://grafana.com/dashboards/8168
 ```
+## 追加の設定
+- 上記の設定だとDatastoreのグラフが一部見えないのでpluginをインストールする。
+```
+! gitをインストール(必要に応じて)
+# dnf -y install git
+
+! pluginをダウンロード
+# git clone https://github.com/grafana/piechart-panel.git --branch release-1.6.1
+# cd piechart-panel
+
+! インストール
+# grafana-cli plugins install grafana-piechart-panel
+
+! grafana再起動
+# systemctl restart grafana
+```
+
+# 以下は今後検討
 
 ## ~Prometheusのインストール~
 ~参考サイトを参照/firewalldで各ポート解放忘れないこと~
