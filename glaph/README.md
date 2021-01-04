@@ -12,8 +12,9 @@
 - ~Prometheus(dnfで最新版)~
 - ~vmware_exporter(pipで最新版)※vmware_exporter(CentOS8からvCenterのAPI叩くやつらしい)~
 
-## 前提条件
-esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること前提となります。  
+## 前提条件など
+- esxi 6.7/vCenter 6.7/CentOS8 Stream(minimal)は準備していること。  
+- esxiおよびvCenterサーバにはMWなどの追加インストールは不要となります。
 
 ## Grafanaのインストール
 - リソース状態の確認はGrafanaを使います。インストールおよび3000番ポートでアクセスするのでfirewallの許可しておく。
