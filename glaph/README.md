@@ -2,6 +2,9 @@
 - exsi上のリソース状態をモニタリングしてみたいので環境構築のメモ書きです。
 - こちらをやってみた感じ(https://github.com/jorgedlcruz/vmware-grafana)
 
+## イメージ図
+![こんな感じ](https://user-images.githubusercontent.com/59173102/103545383-d4861880-4ee4-11eb-8cc0-576898ed069e.png)
+
 ## 必要なもの(動作環境など)
 - esxi 6.7(CPU/メモリは各自の環境で大丈夫)
 - vCenter 6.7(一番弱いスペックのやつ)
