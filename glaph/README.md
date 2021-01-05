@@ -60,7 +60,7 @@ InfluxDB shell version: 1.8.3
 ```
 
 ## telegrafのインストール
-- vCenterのデータ取集はtelegrafを使います。
+- vCenterのデータ取集はtelegrafを使います。(上記で設定したinfluxDBのリポジトリあればインストールできます)
 ```
 # dnf -y install telegraf
 # cd /etc/telegraf
