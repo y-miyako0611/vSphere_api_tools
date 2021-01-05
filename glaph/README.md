@@ -211,3 +211,4 @@ default:
 - https://www.server-world.info/query?os=CentOS_8&p=prometheus&f=5
 - https://qiita.com/hiromiarts/items/fbc2001479ce75246917
 - https://knowledge.sakura.ad.jp/11633/
+- https://hkawabata.github.io/technical-note/note/OSS/influxdb.html
