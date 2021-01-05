@@ -55,6 +55,9 @@ Connected to http://localhost:8086 version 1.8.3
 InfluxDB shell version: 1.8.3
 > 
 > CREATE DATABASE telegraf
+> use telegraf
+> CREATE RETENTION POLICY smartpolicy ON telegraf DURATION 90d REPLICATION 1 DEFAULT
+> SHOW RETENTION POLICIES
 > exit
 
 ```
